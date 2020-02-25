@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login page</title>
+</head>
+<body>
+{% block content %}
+    <h2 style="text-align:center">Please log in</h2><br><br>
+    <form method="post" enctype="multipart/form-data">
+    {{ form.non_field_errors }}
+
+    <div class="form-group">
+    {{ form.email.label_tag }}
+    {{ form.email }}
+    <small id="usernameHelp" class="form-text text-muted">{{ form.username.errors }}</small>
+    </div>
+
+    <div class="form-group">
+    {{ form.password.label_tag }}
+    {{ form.password }}
+    <small id="password1Help" class="form-text text-muted">{{ form.password.errors }}</small>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Sign in</button>
+
+    </form>
+{% endblock %}
+</body>
+</html>
