@@ -130,7 +130,8 @@ MAX_STATUS_LENGTH = 500
 
 REDIS_HOST = '192.162.88.118'
 REDIS_PORT = '6379'
-BROKER_URL = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
+REDIS_DB_INDEX = 0
+BROKER_URL = "redis://{0}:{1}/{2}".format(REDIS_HOST, REDIS_PORT, REDIS_DB_INDEX)
 #BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 3600}
-CELERY_BROKER_URL = 'amqp://celeryuser:celerypassword@localhost:5672/192.168.88.118'
+CELERY_BROKER_URL = 'amqp://celeryuser:celerypassword@192.168.88.118:5672/'
 CELERY_RESULT_BACKEND = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'

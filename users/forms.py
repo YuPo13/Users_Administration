@@ -5,14 +5,14 @@ from django.contrib.auth.models import User
 
 class RegistrationForm(UserCreationForm):
     first_name = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'class': 'form-control',
-                                                                              'placeholder': 'Enter your name here'
-                                                                              }))
+                                                                               'placeholder': 'Enter your name here'
+                                                                               }))
     last_name = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'class': 'form-control',
                                                                               'placeholder': 'Enter your surname here'
                                                                               }))
     email = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'form-control',
-                                                                           'placeholder': 'example@mail.com'
-                                                                           }))
+                                                            'placeholder': 'example@mail.com'
+                                                            }))
     password1 = forms.CharField(label="Password", widget=forms.PasswordInput(attrs={'class': 'form-control',
                                                                                     'placeholder': 'password'
                                                                                     }))
@@ -26,8 +26,11 @@ class RegistrationForm(UserCreationForm):
 
 
 class LoginForm(forms.Form):
-    email = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'form-control',
-                                                                           'placeholder': 'example@mail.com'
-                                                                           }))
-    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control',
-                                                                 'placeholder': 'Your password'}))
+    email = forms.EmailField(widget=forms.EmailInput(attrs={
+        'class': 'form-control',
+        'placeholder': 'example@mail.com'
+    }))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={
+        'class': 'form-control',
+        'placeholder': 'Your password'
+    }))
