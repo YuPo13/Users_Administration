@@ -19,8 +19,11 @@ def user_registration(request):
                 messages.success(request, 'Successful registration')
 
                 return redirect(reverse('users:login'))
+            else:
+                print(user_form.errors)
 
         except DatabaseError:
+            raise
             messages.warning(request, "Your data hasn't been saved. Please try again")
 
     return render(request, 'users/registration.html', {
