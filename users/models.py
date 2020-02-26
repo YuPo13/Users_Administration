@@ -1,5 +1,6 @@
 from django.db import models
-from django_crm_template.settings import MAX_STATUS_LENGTH
+
+MAX_STATUS_LENGTH = 500
 
 
 class Rights(models.Model):

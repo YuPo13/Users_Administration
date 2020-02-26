@@ -14,6 +14,8 @@ def user_registration(request):
             user_form.save()
             messages.success(request, 'Successful registration')
             return redirect(reverse('users:login'))
+        else:
+            messages.warning(request, "Your data hasn't been saved. Please try again")
     return render(request, 'users/registration.html', {
         "user_form": user_form,
     })
@@ -31,9 +33,9 @@ def user_login(request):
                 messages.success(request, "You're logged in.")
                 return redirect(f"/user/profile/{username}")
             else:
-                messages.error(request, "Invalid username or password!")
+                messages.error(request, "Invalid username or password")
         else:
-            messages.error(request, "Invalid input!")
+            messages.error(request, "Invalid input")
     return render(request, 'users/login.html', {
         'form': form,
         'title': 'Login page'
