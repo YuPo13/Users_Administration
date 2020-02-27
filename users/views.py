@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib import messages
-from django.db import DatabaseError
+from django.db import DatabaseError, IntegrityError
 from django.contrib.auth.decorators import login_required
 from .forms import RegistrationForm, LoginForm
 
@@ -23,7 +23,7 @@ def user_registration(request):
             else:
                 print(user_form.errors)
 
-        except DatabaseError:
+        except (DatabaseError, IntegrityError):
             messages.warning(request, "Your data hasn't been saved. Please try again")
 
     return render(request, 'users/registration.html', {
