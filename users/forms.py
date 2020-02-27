@@ -7,11 +7,11 @@ MAX_STATUS_LENGTH = 500
 class RegistrationForm(UserCreationForm):
     first_name = forms.CharField(max_length=MAX_STATUS_LENGTH, widget=forms.TextInput(attrs={
         'class': 'form-control',
-        'placeholder': 'Enter your name here'
+        'placeholder': 'Enter your first name here'
     }))
     last_name = forms.CharField(max_length=MAX_STATUS_LENGTH, widget=forms.TextInput(attrs={
         'class': 'form-control',
-        'placeholder': 'Enter your surname here'
+        'placeholder': 'Enter your last name here'
     }))
     username = forms.EmailField(widget=forms.EmailInput(attrs={
         'class': 'form-control',
@@ -40,3 +40,4 @@ class LoginForm(forms.Form):
         'class': 'form-control',
         'placeholder': 'Your password'
     }))
+

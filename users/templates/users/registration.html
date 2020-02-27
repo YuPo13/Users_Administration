@@ -1,12 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Registration</title>
-</head>
-<body>
+{% extends 'base.html' %}
 {% block content %}
-    <h2 style="text-align:center">Register</h2><br><br>
+    <h2 style="text-align:center">Please register</h2><br><br>
     <form method="post" enctype="multipart/form-data">
         {% if messages %}
         <ul>
@@ -48,9 +42,7 @@
         <small id="password2Help" class="form-text text-muted">{{ user_form.password2.errors }}</small>
         </div>
 
-        <button type="submit" class="btn btn-primary">Sign up</button>
+        <button type="submit" class="btn btn-primary">Register</button>
 
     </form>
 {% endblock %}
-</body>
-</html>

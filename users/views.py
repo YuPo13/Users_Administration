@@ -1,9 +1,10 @@
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib import messages
 from django.db import DatabaseError
-from .models import Users, Roles, Rights
+from django.contrib.auth.decorators import login_required
 from .forms import RegistrationForm, LoginForm
 
 
@@ -23,7 +24,6 @@ def user_registration(request):
                 print(user_form.errors)
 
         except DatabaseError:
-            raise
             messages.warning(request, "Your data hasn't been saved. Please try again")
 
     return render(request, 'users/registration.html', {
@@ -45,7 +45,9 @@ def user_login(request):
                 login(request, user)
                 messages.success(request, "You're logged in.")
 
-                return redirect(f"/user/profile/{email}")
+                return redirect(
+                    reverse('users:profile', kwargs={'username': user.username})
+                )
 
             else:
                 messages.error(request, "Invalid username or password")
@@ -57,3 +59,11 @@ def user_login(request):
         'form': form,
         'title': 'Login page'
     })
+
+@login_required
+def user_profile(request, username):
+    username = User.objects.get(username=username)
+    context = {
+        'username': username
+    }
+    return render(request, 'users/profile.html', context)
