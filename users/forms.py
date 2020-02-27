@@ -13,7 +13,7 @@ class RegistrationForm(UserCreationForm):
         'class': 'form-control',
         'placeholder': 'Enter your last name here'
     }))
-    username = forms.EmailField(widget=forms.EmailInput(attrs={
+    username = forms.EmailField(label="Email", widget=forms.EmailInput(attrs={
         'class': 'form-control',
         'placeholder': 'example@mail.com'
     }))
