@@ -1,4 +1,8 @@
 {% extends 'base.html' %}
 {% block content %}
-    <div>Your content to be displayed here.</div>
+    {%if other_users%}
+        {%for other_user in other_users%}
+            {{other_user}}
+        {%endfor%}
+    {%endif%}
 {% endblock %}

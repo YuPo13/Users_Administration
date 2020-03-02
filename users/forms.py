@@ -1,6 +1,8 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from users.models import UserProfile
+
 
 class RegistrationForm(UserCreationForm):
     first_name = forms.CharField(widget=forms.TextInput(attrs={
@@ -23,6 +25,13 @@ class RegistrationForm(UserCreationForm):
         'class': 'form-control',
         'placeholder': 'the same password once more'
     }))
+
+
+    def save(self, commit=True):
+        user = super().save(commit)
+        UserProfile.user_manager.create(user=user)
+
+        return user
 
     class Meta:
         model = User

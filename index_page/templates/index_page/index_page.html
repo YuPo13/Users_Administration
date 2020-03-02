@@ -1,4 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
-    <div>Please authenticate for further interaction</div>
+    {% if user.is_authenticated %}
+        <div><p>You're logged in. </p>
+            <p>If you want to continue as another user please log out.</p>
+            <p>Otherwise proceed to "My Page".</p></div>
+    {% else %}
+        <div>Please authenticate for further interaction</div>
+    {%endif%}
 {% endblock %}

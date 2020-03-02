@@ -1,9 +1,8 @@
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, get_user_model
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib import messages
-from django.db import DatabaseError, IntegrityError
+from .models import User, UserProfile
 from django.contrib.auth.decorators import login_required
 from .forms import RegistrationForm, LoginForm
 
@@ -14,17 +13,15 @@ def user_registration(request):
     if request.method == 'POST':
         user_form = RegistrationForm(request.POST)
 
-        try:
-            if user_form.is_valid():
-                user_form.save()
-                messages.success(request, 'Successful registration')
+        if user_form.is_valid():
+            user_form.save()
+            messages.success(request, 'Successful registration')
 
-                return redirect(reverse('users:login'))
-            else:
-                print(user_form.errors)
+            return redirect(reverse('users:login'))
+        else:
+            print(user_form.errors)
 
-        except (DatabaseError, IntegrityError):
-            messages.warning(request, "Your data hasn't been saved. Please try again")
+    messages.warning(request, "Your data hasn't been saved. Please try again")
 
     return render(request, 'users/registration.html', {
         "user_form": user_form,
@@ -46,7 +43,7 @@ def user_login(request):
                 messages.success(request, "You're logged in.")
 
                 return redirect(
-                    reverse('users:profile', kwargs={'username': user.username})
+                    reverse('users:profile', kwargs={'uuid': user.userprofile.unique_id})
                 )
 
             else:
@@ -61,10 +58,7 @@ def user_login(request):
     })
 
 @login_required
-def user_profile(request, username):
-    username = User.objects.get(username=username)
-    context = {
-        'username': username
-    }
+def user_profile(request, uuid):
+    other_users = UserProfile.get_others()
 
-    return render(request, 'users/profile.html', context)
+    return render(request, 'users/profile.html')

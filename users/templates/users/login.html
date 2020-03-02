@@ -2,14 +2,6 @@
 {% block content %}
     <h2 style="text-align:center">Please log in</h2><br><br>
         <form method="post" enctype="multipart/form-data">
-            {{ form.non_field_errors }}
-                {% if messages %}
-            <ul>
-                {% for message in messages %}
-                   <li>{{ message }}</li>
-                {% endfor %}
-            </ul>
-            {% endif %}
 
             <div class="form-group">
             {% csrf_token %}
