@@ -2,6 +2,7 @@ from django.contrib.auth import authenticate, login, get_user_model
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib import messages
+from django.db import connection
 from .models import User, UserProfile
 from django.contrib.auth.decorators import login_required
 from .forms import RegistrationForm, LoginForm
@@ -59,6 +60,28 @@ def user_login(request):
 
 @login_required
 def user_profile(request, uuid):
-    other_users = UserProfile.get_others()
+    group_manager = 1
+    query_to_user = f"SELECT * FROM auth_user"
+    query_to_role = f"SELECT * FROM auth_user JOIN auth_user_groups ON auth_user.id=auth_user_groups.user_id " \
+                    f"WHERE auth_user_groups.group_id={group_manager}"
 
-    return render(request, 'users/profile.html')
+    with connection.cursor() as cursor:
+        cursor.execute(query_to_user)
+        other_users = [User.objects.get(id=id_[0]) for id_ in cursor.fetchall()]
+        cursor.execute(query_to_role)
+        managers = [User.objects.get(id=id_[0]) for id_ in cursor.fetchall()]
+
+    context = {
+        "other_users": other_users,
+        "uuid": uuid
+    }
+
+    current_user = request.user
+
+    if current_user not in managers:
+
+        return render(request, 'users/profile.html', context)
+
+    else:
+
+        return render(request, 'users/profile_mgr.html', context)

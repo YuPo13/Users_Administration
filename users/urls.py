@@ -8,5 +8,6 @@ urlpatterns = [
     path('registration', user_registration, name='registration'),
     path('login', user_login, name='login'),
     path('logout', LogoutView.as_view(template_name='users/logout.html'), name='logout'),
-    path('profile/<uuid>', user_profile, name='profile'),
+    path('profile_mgr/<uuid>', user_profile, name='profile'),
+    path('profile/<uuid>', user_profile, name='profile')
 ]

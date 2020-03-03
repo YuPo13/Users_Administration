@@ -26,7 +26,6 @@ class RegistrationForm(UserCreationForm):
         'placeholder': 'the same password once more'
     }))
 
-
     def save(self, commit=True):
         user = super().save(commit)
         UserProfile.user_manager.create(user=user)
