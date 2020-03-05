@@ -19,6 +19,7 @@ def user_registration(request):
             messages.success(request, 'Successful registration')
 
             return redirect(reverse('users:login'))
+
         else:
             print(user_form.errors)
 
@@ -57,6 +58,7 @@ def user_login(request):
         'form': form,
         'title': 'Login page'
     })
+
 
 @login_required
 def user_profile(request, uuid):
