@@ -1,11 +1,13 @@
-from django.contrib.auth import authenticate, login, get_user_model
+from django.contrib.auth import authenticate, login, update_session_auth_hash
+from django.db.models import F
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib import messages
 from django.db import connection
 from .models import User, UserProfile
 from django.contrib.auth.decorators import login_required
-from .forms import RegistrationForm, LoginForm
+from django.contrib.auth.models import Group
+from .forms import RegistrationForm, LoginForm, OwnPasswordChangeForm
 
 
 def user_registration(request):
@@ -62,16 +64,9 @@ def user_login(request):
 
 @login_required
 def user_profile(request, uuid):
-    group_manager = 1
-    query_to_user = f"SELECT * FROM auth_user"
-    query_to_role = f"SELECT * FROM auth_user JOIN auth_user_groups ON auth_user.id=auth_user_groups.user_id " \
-                    f"WHERE auth_user_groups.group_id={group_manager}"
-
-    with connection.cursor() as cursor:
-        cursor.execute(query_to_user)
-        other_users = [User.objects.get(id=id_[0]) for id_ in cursor.fetchall()]
-        cursor.execute(query_to_role)
-        managers = [User.objects.get(id=id_[0]) for id_ in cursor.fetchall()]
+    manager = Group.objects.get(name="Manager")
+    other_users = [user for user in User.objects.all()]
+    managers = [user for user in User.objects.filter(groups=manager)]
 
     context = {
         "other_users": other_users,
@@ -87,3 +82,24 @@ def user_profile(request, uuid):
     else:
 
         return render(request, 'users/profile_mgr.html', context)
+
+
+@login_required
+def own_password_change(request):
+    user = request.user
+    uuid = user.userprofile.unique_id
+    form = OwnPasswordChangeForm(user=user, data=request.POST)
+
+    if request.method == 'POST':
+
+        if form.is_valid():
+            form.save()
+            update_session_auth_hash(request, form.user)
+            messages.success(request, 'You have changed your password')
+
+            return user_profile(request,uuid)
+
+        else:
+            messages.warning(request, 'You have not changed your password')
+
+    return render(request, 'users/own_password_change.html', {'form': form})

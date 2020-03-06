@@ -8,13 +8,19 @@
             <th scope="col">First name</th>
             <th scope="col">Last name</th>
             <th scope="col">Username/email</th>
+            <th scope="col">Password re-set</th>
             </thead>
         {%for other_user in other_users%}
+            {%if other_user != request.user%}
             <tr>
                 <td >{{other_user.first_name}}</td>
                 <td>{{other_user.last_name}}</td>
                 <td>{{other_user.username}}</td>
+                <td>
+                    <button type="submit" class="btn text-warning bg-light outline-secondary">Password re-set</button>
+                </td>
             </tr>
+            {%endif%}
         {%endfor%}
         </table>
     {%endif%}
