@@ -64,7 +64,7 @@ def user_login(request):
 @login_required
 def user_profile(request, uuid):
     exclude_id_list = [request.user.id, User.objects.get(username="admin").id]
-    other_users = User.objects.exclude(id__in=exclude_id_list)
+    other_users = User.objects.exclude(id__in=exclude_id_list).order_by('first_name')
     paginator = Paginator(other_users, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
