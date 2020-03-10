@@ -58,3 +58,13 @@ class OwnPasswordChangeForm(SetPasswordForm):
         'placeholder': 'new password once more'
     }))
 
+
+class OtherUsersPasswordChangeForm(SetPasswordForm):
+    new_password1 = forms.CharField(widget=forms.PasswordInput(attrs={
+        'class': 'form-control',
+        'placeholder': 'new password'
+    }))
+    new_password2 = forms.CharField(widget=forms.PasswordInput(attrs={
+        'class': 'form-control',
+        'placeholder': 'new password once more'
+    }))

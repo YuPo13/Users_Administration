@@ -1,13 +1,11 @@
 from django.contrib.auth import authenticate, login, update_session_auth_hash
-from django.db.models import F
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib import messages
-from django.db import connection
 from .models import User, UserProfile
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
-from .forms import RegistrationForm, LoginForm, OwnPasswordChangeForm
+from .forms import RegistrationForm, LoginForm, OwnPasswordChangeForm, OtherUsersPasswordChangeForm
 
 
 def user_registration(request):
@@ -65,11 +63,10 @@ def user_login(request):
 @login_required
 def user_profile(request, uuid):
     manager = Group.objects.get(name="Manager")
-    other_users = [user for user in User.objects.all()]
     managers = [user for user in User.objects.filter(groups=manager)]
 
     context = {
-        "other_users": other_users,
+        "other_users": User.objects.all(),
         "uuid": uuid
     }
 
@@ -103,3 +100,27 @@ def own_password_change(request):
             messages.warning(request, 'You have not changed your password')
 
     return render(request, 'users/own_password_change.html', {'form': form})
+
+
+@login_required
+def others_password_change(request, other_user_uuid):
+
+    other_user = User.objects.get(userprofile=other_user_uuid)
+    other_user_uuid = other_user.userprofile.unique_id
+    form = OtherUsersPasswordChangeForm(user=other_user, data=request.POST)
+
+    if request.method == 'POST':
+
+        if form.is_valid():
+            form.save()
+            user = request.user
+            uuid_own = user.userprofile.unique_id
+            update_session_auth_hash(request, form.user)
+            messages.success(request, 'You have changed password for %s ' % other_user)
+
+            return user_profile(request,uuid_own)
+
+        else:
+            messages.warning(request, 'You have not changed the password')
+
+    return render(request, 'users/others_password_change.html', {'form': form, 'other_user_uuid': other_user_uuid})

@@ -11,13 +11,18 @@
             <th scope="col">Password re-set</th>
             </thead>
         {%for other_user in other_users%}
-            {%if other_user != request.user%}
+            {%if other_user != request.user and other_user.username != "admin"%}
             <tr>
                 <td >{{other_user.first_name}}</td>
                 <td>{{other_user.last_name}}</td>
                 <td>{{other_user.username}}</td>
                 <td>
-                    <button type="submit" class="btn text-warning bg-light outline-secondary">Password re-set</button>
+                    <button type="submit"
+                            class="btn text-warning bg-light outline-secondary">
+                                <a href="{% url 'users:others_password_change' other_user.userprofile.unique_id %}">
+                                    Password re-set
+                                </a>
+                    </button>
                 </td>
             </tr>
             {%endif%}
