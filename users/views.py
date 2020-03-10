@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login, update_session_auth_hash
+from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib import messages
@@ -62,12 +63,18 @@ def user_login(request):
 
 @login_required
 def user_profile(request, uuid):
+    exclude_id_list = [request.user.id, User.objects.get(username="admin").id]
+    other_users = User.objects.exclude(id__in=exclude_id_list)
+    paginator = Paginator(other_users, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     manager = Group.objects.get(name="Manager")
     managers = [user for user in User.objects.filter(groups=manager)]
 
     context = {
-        "other_users": User.objects.all(),
-        "uuid": uuid
+        "other_users": other_users,
+        "uuid": uuid,
+        "page_obj": page_obj
     }
 
     current_user = request.user
