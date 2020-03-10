@@ -10,7 +10,7 @@
             <th scope="col">Username/email</th>
             <th scope="col">Password re-set</th>
             </thead>
-        {%for other_user in other_users%}
+        {%for other_user in page_obj%}
             <tr>
                 <td >{{other_user.first_name}}</td>
                 <td>{{other_user.last_name}}</td>
