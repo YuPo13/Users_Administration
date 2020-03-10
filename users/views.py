@@ -6,7 +6,7 @@ from django.contrib import messages
 from .models import User, UserProfile
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
-from .forms import RegistrationForm, LoginForm, OwnPasswordChangeForm, OtherUsersPasswordChangeForm
+from .forms import RegistrationForm, LoginForm, OwnPasswordChangeForm, OtherUsersPasswordChangeForm, NewUserCreationForm
 
 
 def user_registration(request):
@@ -130,4 +130,30 @@ def others_password_change(request, other_user_uuid):
         else:
             messages.warning(request, 'You have not changed the password')
 
-    return render(request, 'users/others_password_change.html', {'form': form, 'other_user_uuid': other_user_uuid})
+    return render(request, 'users/others_password_change.html', {
+        'form': form,
+        'other_user_uuid': other_user_uuid
+    })
+
+
+@login_required
+def new_user_creation(request):
+    new_user_form = NewUserCreationForm()
+
+    if request.method == 'POST':
+        new_user_form = NewUserCreationForm(request.POST)
+
+        if new_user_form.is_valid():
+            new_user = new_user_form.save()
+            messages.success(request, 'You have created a new profile %s' % new_user.username)
+
+            return render(request, "index_page/index_page.html")
+
+        else:
+            print(new_user_form.errors)
+
+        messages.warning(request, "New profile hasn't been created. Please try again")
+
+    return render(request, 'users/creation.html', {
+        "new_user_form": new_user_form,
+    })

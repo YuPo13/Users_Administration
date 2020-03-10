@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h2 style="text-align:center">Please register a new user</h2><br><br>
+    <form method="post" enctype="multipart/form-data">
+
+         {% csrf_token %}
+        <div class="form-group">
+        {{ new_user_form.first_name.label_tag }}
+        {{ new_user_form.first_name }}
+        <small id="first_nameHelp" class="form-text text-danger">{{ user_form.first_name.errors }}</small>
+        </div>
+
+        <div class="form-group">
+        {{ new_user_form.last_name.label_tag }}
+        {{ new_user_form.last_name }}
+        <small id="second_nameHelp" class="form-text text-danger">{{ user_form.last_name.errors }}</small>
+        </div>
+
+        <div class="form-group">
+        {{ new_user_form.username.label_tag }}
+        {{ new_user_form.username }}
+        <small id="emailHelp" class="form-text text-danger">{{ user_form.email.errors }}</small>
+        </div>
+
+        <div class="form-group">
+        {{ new_user_form.password1.label_tag }}
+        {{ new_user_form.password1 }}
+        <small id="password1Help" class="form-text text-danger">{{ user_form.password1.errors }}</small>
+        </div>
+
+        <div class="form-group">
+        {{ new_user_form.password2.label_tag }}
+        {{ new_user_form.password2 }}
+        <small id="password2Help" class="form-text text-danger">{{ user_form.password2.errors }}</small>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Register</button>
+
+    </form>
+{% endblock %}

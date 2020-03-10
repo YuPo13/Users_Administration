@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
-
+<button type="submit" class="btn text-warning bg-light outline-secondary">
+    <a href="{% url 'users:creation' %}">
+        New user creation
+    </a>
+</button>
     {%if other_users%}
     <h5>List of registered users</h5>
         <table>
