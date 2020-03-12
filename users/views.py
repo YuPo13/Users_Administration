@@ -80,11 +80,9 @@ def user_profile(request, uuid):
     current_user = request.user
 
     if current_user not in managers:
-
         return render(request, 'users/profile.html', context)
 
     else:
-
         return render(request, 'users/profile_mgr.html', context)
 
 
