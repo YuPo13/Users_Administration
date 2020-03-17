@@ -70,7 +70,6 @@ def user_profile(request, uuid):
     page_obj = paginator.get_page(page_number)
     manager = Group.objects.get(name="Manager")
     managers = [user for user in User.objects.filter(groups=manager)]
-
     context = {
         "other_users": other_users,
         "uuid": uuid,
