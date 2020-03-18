@@ -63,7 +63,7 @@ def user_login(request):
 
 @login_required
 def user_profile(request, uuid):
-    exclude_id_list = [request.user.id, User.objects.get(username="admin").id]
+    exclude_id_list = [admin.id for admin in list(User.objects.filter(is_superuser="t"))] + [request.user.id]
     other_users = User.objects.exclude(id__in=exclude_id_list).order_by("first_name")
     paginator = Paginator(other_users, 5)
     page_number = request.GET.get('page')
