@@ -141,7 +141,7 @@ PyYAML==5.4
 pyzmq==19.0.1
 rabbitmq==0.2.0
 redis==3.4.1
-reportlab==3.4.0
+reportlab==3.5.55
 requests==2.22.0
 requests-unixsocket==0.1.5
 scipy==1.5.0
